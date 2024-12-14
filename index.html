@@ -1,0 +1,29 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Model for Robustness Test</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Upload Your Model for Robustness Testing</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="model">Select Model File:</label>
+        <input type="file" name="model" id="model" accept=".h5" required>
+        <button type="submit">Upload and Test</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const form = document.querySelector('form');
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/upload', { method: 'POST', body: formData });
+            const result = await response.json();
+            document.getElementById('result').innerText = `Robustness Score: ${result.robustness_score}%`;
+        };
+    </script>
+</body>
+</html>
